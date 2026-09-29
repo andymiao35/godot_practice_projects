@@ -5,6 +5,7 @@ const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_timer: Timer = $CoyoteTimer
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 
 func _physics_process(delta: float) -> void:
@@ -12,10 +13,14 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Handle jump.
+	# Section: Handle jump
 	if Input.is_action_just_pressed("jump") and (is_on_floor() or not coyote_timer.is_stopped()):
 		velocity.y = JUMP_VELOCITY
+		audio_stream_player_2d.play()
 
+
+
+	# Section: Handle sprite direction
 	# Get the input direction: -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
 	
@@ -24,7 +29,10 @@ func _physics_process(delta: float) -> void:
 	elif direction == -1:
 		animated_sprite_2d.flip_h = true
 	
-	# Play animation
+	
+	
+	
+	# Section: Handle animation
 	if  is_on_floor():
 		if direction == 0:
 			animated_sprite_2d.play("idle")
@@ -34,6 +42,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("jumping")
 	
 		
+	# Section: Handle movement
 	# Apply movement
 	if direction:
 		velocity.x = direction * SPEED
