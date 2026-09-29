@@ -1,12 +1,13 @@
 extends Area2D
 
 @onready var timer: Timer = $Timer
+@onready var death_sound_effect: AudioStreamPlayer2D = $DeathSoundEffect
 
 func _on_body_entered(body: Node2D) -> void:
 	Engine.time_scale = 0.5
 	body.get_node("CollisionShape2D").queue_free()
+	death_sound_effect.play()
 	timer.start()
-	pass # Replace with function body.
 
 
 func _on_timer_timeout() -> void:
