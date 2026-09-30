@@ -195,3 +195,7 @@ one_shot = true
 [node name="JumpSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=346540002]
 stream = ExtResource("3_qhqgy")
 bus = &"SFX"
+
+[node name="JumpBufferTimer" type="Timer" parent="." unique_id=744155553]
+wait_time = 0.15
+one_shot = true

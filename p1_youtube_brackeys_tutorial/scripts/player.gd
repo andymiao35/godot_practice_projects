@@ -5,6 +5,7 @@ const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var coyote_timer: Timer = $CoyoteTimer
+@onready var jump_buffer_timer: Timer = $JumpBufferTimer
 @onready var jump_sound_effect: AudioStreamPlayer2D = $JumpSoundEffect
 
 
@@ -14,9 +15,15 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	# Section: Handle jump
-	if Input.is_action_just_pressed("jump") and (is_on_floor() or not coyote_timer.is_stopped()):
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer_timer.start()
+	
+	
+	if not jump_buffer_timer.is_stopped() and (is_on_floor() or not coyote_timer.is_stopped()):
 		velocity.y = JUMP_VELOCITY
 		jump_sound_effect.play()
+		jump_buffer_timer.stop()
+		coyote_timer.stop()
 
 
 
